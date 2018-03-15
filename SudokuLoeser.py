@@ -133,12 +133,21 @@ def check_sudoku(sudoku):
         return(True)
         
 
+'''
+Diese Funktion ueberprueft, falls in einer Zeile oder Spalte nur 2 bzw. 3
+Eintraege sind, ob diese auch in demselben 3x3 Kaestchen sind.
+Gibt eine Liste mit einzig und allein dem Element False zurueck, falls sie nicht in einem Kästchen sind.
+Gibt eine Liste mit True und der Nummer des Kaestchens zurueck.
+Beispiel:
+    Hat Spalte 4 auf Ebene 7 nur zwei Eintraege und ergibt check_double = [True,1],
+    so sind alle Eintraege auf Spalte 4 auf Ebene 7 in dem mittleren Kaestchen.
+
+Die Wichtigkeit dieser Funktion wird spaeter weiter erlautert.
+'''
 def check_double(line, number):
-    if number == 2:
-       #print(line)
-        inds = np.nonzero(line)
-       #print(inds)
-        if inds[0][0] in [0,1,2] and inds[0][1] in [0,1,2]:
+    if number == 2:            # hat die Zeile oder Spalte 2 Elemente
+        inds = np.nonzero(line) # finde die Indizes der Elemente die nicht 0 sind
+        if inds[0][0] in [0,1,2] and inds[0][1] in [0,1,2]: # ueberprueft o sie im selben Kaestchen sind 
             return([True,0])
         
         elif inds[0][0] in [3,4,5] and inds[0][1] in [3,4,5]:
@@ -148,14 +157,12 @@ def check_double(line, number):
             return([True,2])
         
         else:
-            return([False])
+            return([False]) 
         
-    elif number == 3:
-       #print(line)
-        inds = np.nonzero(line)
-       #print(inds)
-        if inds[0][0] in [0,1,2] and inds[0][1] in [0,1,2] and inds[0][2] in [0,1,2]:
-            return([True,0])
+    elif number == 3:           # hat die Zeile oder Spalte 3 Elemente
+        inds = np.nonzero(line) # finde die Indizes der Elemente die nicht 0 sind
+        if inds[0][0] in [0,1,2] and inds[0][1] in [0,1,2] and inds[0][2] in [0,1,2]: # ueberprueft o sie im selben Kaestchen sind
+            return([True,0]) 
          
         elif inds[0][0] in [3,4,5] and inds[0][1] in [3,4,5] and inds[0][2] in [3,4,5]:
             return([True,1])
@@ -205,36 +212,45 @@ a = clues(a,2,6,9)
 
 # Loest das Beispiel Sudoku
 
-run = 0
-solved = check_sudoku(a)
-while solved != True:
-    run = run + 1
-    solved = check_sudoku(a)
-   #print(solved)
-######## only one possible number for a square ###########################################################################
-    for i in range(9):
-        for j in range(9):
-            reihe = a[1:10,i,j]
-            pruef = check_list(reihe)
-            
-            if pruef == 1:
-                print("AUSCHLUSS",i,j,a[0:10,i,j])
-                a = clues(a,int(reihe[np.argmax(reihe)]),j+1,i+1)
-                run = 0
-                print(a)
-                solved = check_sudoku(a)
+run = 0     # Bestimmt, in dem wievielten durchlauf der Schleife sich das Pogramm befindet.
+            # Diese Variable wird immer auf 0 zurueckgesetzt, wenn eine neue Zahl in das
+            # Sudoku eingesetzt wird
+solved = check_sudoku(a)  # ueberprueft ob das Sudoku geloest wurde. 
+while solved != True:     # solange das Sudoku nicht geloest ist, soll er veruchen es zu loesen
+    run = run + 1         # run variable wird um 1 erhoeht
 
-###### only one possible number for a square because of big square #######################################################
-    for n in range(1,10):
-        for m in range(3):
-            for o in range(3):
-                square = a[n,3*m:3*(m+1),3*o:3*(o+1)]
-                #print(m,o)
-                #print(square)
-                pruef = check_square(square)
-                #print(pruef)
-                if pruef == 1:
-                    #print(int(np.argmax(square)))
+# Das folgende Stueck Code prueft nach dem Ausschlussprinzip, ob in ein Feld 
+# nur noch eine moegliche Zahl kommen kann, wenn ja, setzt es diese ein.
+
+    for i in range(9):           # iteriert ueber x- und y- Koordinaten des Sudokus
+        for j in range(9):       # um alle Felder zu ueberpruefen
+            reihe = a[1:10,i,j]       # speichert die Liste der moeglichen Zahlen fuer ein Feld mit
+                                      # Koordinaten (x,y) in reihe
+            pruef = check_list(reihe) # prueft wie viele Elemente in reihe ungleich Null sind.
+            
+            if pruef == 1:            # Wenn die Anzahl der Element die ungleich Null sind, eins betraegt,
+                                      # dann wird die Zahl, die nicht gleich Null ist, an der ueberprueften
+                                      # Stelle im Sudoku eingesetzt
+                a = clues(a,int(reihe[np.argmax(reihe)]),j+1,i+1) # Setzt Zahl ein
+                run = 0               # Sudoku wurde veraendert, run wird also 0
+
+
+
+# Das folgende Stueck Code prueft nach dem Ausschlussprinzip, ob in einem Kaestchen 
+# nur noch in ein Feld eine bestimmte Zahl eingesetzt werden kann, wenn ja, setzt es diese ein.    
+    
+    for n in range(1,10):        # iteriert über die verschiedenen Zahlen Ebenen
+        
+        for m in range(3):       # iteriert über die 9 verschieden moelichen Kaestchen
+            for o in range(3):   # in einer Ebene
+                
+                square = a[n,3*m:3*(m+1),3*o:3*(o+1)]    # erstellt das Kaestchen
+                pruef = check_square(square)             # prueft wie viele Elemente im Kaestchen 
+                                                         # ungleich Null sind.
+                
+                if pruef == 1:                           # Wenn nur ein Element ungleich Null ist,
+                                                         # werden die Koordinaten des Elements im Sudoku
+                                                         # ermittelt
                     if int(np.argmax(square)) in [0,1,2]:
                         y = 1
                         
@@ -254,77 +270,101 @@ while solved != True:
                     elif int(np.argmax(square)) in [2,5,8]:
                         x = 3
                     
-                    #print(x,y)
-                    #print((y + (3*o)),(x + (3*m)))
-                    print(square)
-                    a = clues(a,n,(x + (3*o)),(y + (3*m)))
-                    run = 0
-                    print(a)
-                    solved = check_sudoku(a)
-        
-########### Zeilen und spalten überprüfen ##################################################################################
-    for n in range(1,10):
-        for m in range(9):
-            zeile = a[n,m,:]
-            pruef_zeile = check_list(zeile)
-            if pruef_zeile == 1:
-                print(m,'z',zeile)
-                a = clues(a,n,int(np.argmax(zeile)) + 1,m + 1)
-                run = 0
-                print(a)
-                solved = check_sudoku(a)
-            
-            spalte = a[n,:,m]
-            pruef_spalte = check_list(spalte)
-            if pruef_spalte == 1:
-               #print(int(np.argmax(spalte)),m)
-                print(m,'s',spalte)
-                a = clues(a,n,m + 1,int(np.argmax(spalte)) + 1)
-                run = 0
-                solved = check_sudoku(a)
-                print(a)
+                    a = clues(a,n,(x + (3*o)),(y + (3*m))) # Zahl wird eingesetzt
+                    run = 0                                # Sudoku wurde veraendert, run wird also 0
 
-    if run >= 3:
-        for n in range(1,10):
-            for m in range(9):
-                zeile = a[n,m,:]
-                pruef_zeile = check_list(zeile)
-                if pruef_zeile == 2 or pruef_zeile == 3:
-                    doubles = check_double(zeile,pruef_zeile)
-                   #print(doubles)
-                    if doubles[0] == True:
-                        if m in [0,3,6]:
+        
+# Das folgende Stueck Code prueft nach dem Ausschlussprinzip, ob in einer Zeile oder Spalte 
+# nur noch in ein Feld eine bestimmte Zahl eingesetzt werden kann, wenn ja, setzt es diese ein.
+                    
+    for n in range(1,10):  # iteriert ueber die verschiedenen Zahlen Ebenen 
+        for m in range(9): # iteriert ueber Zeilen und Spalten in einer Zahlen Ebene
+            
+            zeile = a[n,m,:]  # erstellt Zeile
+            pruef_zeile = check_list(zeile)  # prueft wie viele Elemente die Zeile hat
+                                             # die ungleich Null sind
+            
+            if pruef_zeile == 1:      # Wenn die Anzahl der Element die ungleich Null sind, eins betraegt,
+                                      # dann wird die Zahl, die nicht gleich Null ist, an der ueberprueften
+                                      # Stelle im Sudoku eingesetzt
+                
+                a = clues(a,n,int(np.argmax(zeile)) + 1,m + 1)  # Zahl die ungleich Null ist, wird
+                                                                # an entsprechender Stelle im Sudoku eingesetzt
+                run = 0               # Sudoku wurde veraendert, run wird also 0
+
+            
+            spalte = a[n,:,m] # erstellt Spalte
+            pruef_spalte = check_list(spalte)  # prueft wie viele Elemente die Spalte hat
+                                               # die ungleich Null sind
+            if pruef_spalte == 1:     # Wenn die Anzahl der Element die ungleich Null sind, eins betraegt,
+                                      # dann wird die Zahl, die nicht gleich Null ist, an der ueberprueften
+                                      # Stelle im Sudoku eingesetzt
+                
+                a = clues(a,n,m + 1,int(np.argmax(spalte)) + 1)  # Zahl die ungleich Null ist, wird
+                                                                 # an entsprechender Stelle im Sudoku eingesetzt
+                run = 0               # Sudoku wurde veraendert, run wird also 0
+
+
+# Das folgende Stueck Code kommt erst zum Einsatz, wenn das Programm bereits im dritten Durchlauf
+# ist und keine weiteren Zahlen zum Sudoku hinzufuegen konnte, obwohl das Sudoku noch nicht geloest ist.
+# Dies ist so, da diese Methode nur bei wenigen schweren Sudokus ueberhaupt zum loesen benoetigt wird. 
+# Dabei wird ueberprueft ob in einer Zahlen Ebene Zeilen oder Spalten existieren mit der folgenden Eigenschaft:
+# Alle Moeglichkeiten die Entsprechende Zahl in dieser Zeile oder Spalte unterzubringen befinden sich
+# in einem 3x3 Kaestchen. Findet man eine Zeile oder Spalte mit dieser Eigenschaft, so koennen in dem
+# entsprechenden Kaestchen alle anderen Moeglichkeiten die Zahl zu setzen vernachlaessigt werden. 
+# Dies ist der Grund fuer die check_double Funktion.
+    
+    if run >= 3:                                   # wird nur im dritten Durchlauf ausgefuehrt
+        for n in range(1,10):                      # iteriert ueber die verschiedenen Zahlen Ebenen
+            for m in range(9):                     # iteriert ueber die Zeilen und Spalten
+                
+                zeile = a[n,m,:]                   # erstellt Zeile
+                pruef_zeile = check_list(zeile)    # ueberprueft wieviele Elemente in Zeile ungleich Null sind
+                
+                if pruef_zeile == 2 or pruef_zeile == 3:      # sind 2 oder 3 Elemente ungleich Null,
+                                                              # wird fortgesetzt, andernfalls koennen sie nicht
+                                                              # in einem Kaestchen sein
+                    
+                    doubles = check_double(zeile,pruef_zeile) # prueft ob die Elemente im selben Kaestchen sind 
+                    if doubles[0] == True:                    # Falls ja, wird fortgesetzt
+                        
+                        if m in [0,3,6]:                      # es wird nun ermittelt, welche Zeilen der Zahlen Ebene
+                                                              # gleich Null gesetzt werden muessen
+                                                              
                             a[n,m+1:m+3,doubles[1]*3:(doubles[1]+1)*3] = 0
-                            print(a)
                             
                         elif m in [1,4,7]:
                             a[n,m-1,doubles[1]*3:(doubles[1]+1)*3] = 0
                             a[n,m+1,doubles[1]*3:(doubles[1]+1)*3] = 0
-                            print(a)
                             
                         else:
                             a[n,m-2:m,doubles[1]*3:(doubles[1]+1)*3] = 0
-                            print(a)
                             
                             
-                spalte = a[n,:,m]
-                pruef_spalte = check_list(spalte)
-                if pruef_spalte == 2 or pruef_spalte == 3:
-                    doubles = check_double(spalte,pruef_spalte)
-                   #print(doubles)
+                spalte = a[n,:,m]                   # erstellt Spalte
+                pruef_spalte = check_list(spalte)   # ueberprueft wieviele Elemente in Zeile ungleich Null sind
+
+                if pruef_spalte == 2 or pruef_spalte == 3:      # sind 2 oder 3 Elemente ungleich Null,
+                                                                # wird fortgesetzt, andernfalls koennen sie nicht
+                                                                # in einem Kaestchen sein
+                                                                
+                    doubles = check_double(spalte,pruef_spalte) # prueft ob die Elemente im selben Kaestchen sind 
                     if doubles[0] == True:
-                        if m in [0,3,6]:
+                        if m in [0,3,6]:                      # es wird nun ermittelt, welche Zeilen der Zahlen Ebene
+                                                              # gleich Null gesetzt werden koennen
                             a[n,doubles[1]*3:(doubles[1]+1)*3,m+1:m+3] = 0
-                            print(a)
                             
                         elif m in [1,4,7]:
                             a[n,doubles[1]*3:(doubles[1]+1)*3,m-1] = 0
                             a[n,doubles[1]*3:(doubles[1]+1)*3,m+1] = 0
-                            print(a)
                             
                         else:
                             a[n,doubles[1]*3:(doubles[1]+1)*3,m-2:m] = 0 
-                            print(a)
+
+    
+    
+    # Zuletzt wird erneut ueberprueft ob das Sudoku geloest wurde     
+    solved = check_sudoku(a)
                             
-                            
-print(a)
+# gibt das fertige Sudoku aus
+print(a[0,:,:])
