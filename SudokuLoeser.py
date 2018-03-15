@@ -91,6 +91,82 @@ def clues(sudoku, zahl, x, y):
     
     return(sudoku)
     
+'''
+Die folgende Funktion prueft fuer ein Liste mit 9 Eintraegen wie viele davon
+ungleich Null sind und gibt diese aus. 
+'''
+
+def check_list(reihe):
+    x = 0
+    for i in range(9):
+        if reihe[i] != 0:
+            x = x + 1
+    
+    return(x)
+
+'''
+Die folgende Funktion prueft fuer ein 3x3 Kaestchen wie viele Eintraege davon
+ungleich Null sind und gibt diese aus. 
+'''
+
+def check_square(square):
+    s = np.reshape(square,9)
+    x = check_list(s)
+    return(x)
+
+'''
+Die folgende Funktion prueft fuer ein Sudoku ob alle Faelder ungleich 0 
+sind oder nicht. Gibt True aus falls alle ungleich 0 sind, andernfalls gibt
+die Funktion False aus.
+'''
+
+def check_sudoku(sudoku):
+    s = np.reshape(sudoku[0,:,:],81)
+    x = 0
+    for i in range(81):
+        if s[i] == 0:
+            x = x + 1
+    
+    if x > 0:
+        return(False)
+    else:
+        return(True)
+        
+
+def check_double(line, number):
+    if number == 2:
+       #print(line)
+        inds = np.nonzero(line)
+       #print(inds)
+        if inds[0][0] in [0,1,2] and inds[0][1] in [0,1,2]:
+            return([True,0])
+        
+        elif inds[0][0] in [3,4,5] and inds[0][1] in [3,4,5]:
+            return([True,1])
+        
+        elif inds[0][0] in [6,7,8] and inds[0][1] in [6,7,8]:
+            return([True,2])
+        
+        else:
+            return([False])
+        
+    elif number == 3:
+       #print(line)
+        inds = np.nonzero(line)
+       #print(inds)
+        if inds[0][0] in [0,1,2] and inds[0][1] in [0,1,2] and inds[0][2] in [0,1,2]:
+            return([True,0])
+         
+        elif inds[0][0] in [3,4,5] and inds[0][1] in [3,4,5] and inds[0][2] in [3,4,5]:
+            return([True,1])
+        
+        elif inds[0][0] in [6,7,8] and inds[0][1] in [6,7,8] and inds[0][2] in [6,7,8]:
+            return([True,2])
+        
+        else:
+            return([False])
+    
+
 # Beispiel Sudoku
 
 # Erstelle leeres Sudoku   
@@ -127,5 +203,128 @@ a = clues(a,3,1,8)
 a = clues(a,4,9,8)
 a = clues(a,2,6,9)    
 
-# stelle Sudoku dar
+# Loest das Beispiel Sudoku
+
+run = 0
+solved = check_sudoku(a)
+while solved != True:
+    run = run + 1
+    solved = check_sudoku(a)
+   #print(solved)
+######## only one possible number for a square ###########################################################################
+    for i in range(9):
+        for j in range(9):
+            reihe = a[1:10,i,j]
+            pruef = check_list(reihe)
+            
+            if pruef == 1:
+                print("AUSCHLUSS",i,j,a[0:10,i,j])
+                a = clues(a,int(reihe[np.argmax(reihe)]),j+1,i+1)
+                run = 0
+                print(a)
+                solved = check_sudoku(a)
+
+###### only one possible number for a square because of big square #######################################################
+    for n in range(1,10):
+        for m in range(3):
+            for o in range(3):
+                square = a[n,3*m:3*(m+1),3*o:3*(o+1)]
+                #print(m,o)
+                #print(square)
+                pruef = check_square(square)
+                #print(pruef)
+                if pruef == 1:
+                    #print(int(np.argmax(square)))
+                    if int(np.argmax(square)) in [0,1,2]:
+                        y = 1
+                        
+                    elif int(np.argmax(square)) in [3,4,5]:
+                        y = 2
+                    
+                    elif int(np.argmax(square)) in [6,7,8]:
+                        y = 3
+                    
+                    
+                    if int(np.argmax(square)) in [0,3,6]:
+                        x = 1
+                        
+                    elif int(np.argmax(square)) in [1,4,7]:
+                        x = 2
+                    
+                    elif int(np.argmax(square)) in [2,5,8]:
+                        x = 3
+                    
+                    #print(x,y)
+                    #print((y + (3*o)),(x + (3*m)))
+                    print(square)
+                    a = clues(a,n,(x + (3*o)),(y + (3*m)))
+                    run = 0
+                    print(a)
+                    solved = check_sudoku(a)
+        
+########### Zeilen und spalten überprüfen ##################################################################################
+    for n in range(1,10):
+        for m in range(9):
+            zeile = a[n,m,:]
+            pruef_zeile = check_list(zeile)
+            if pruef_zeile == 1:
+                print(m,'z',zeile)
+                a = clues(a,n,int(np.argmax(zeile)) + 1,m + 1)
+                run = 0
+                print(a)
+                solved = check_sudoku(a)
+            
+            spalte = a[n,:,m]
+            pruef_spalte = check_list(spalte)
+            if pruef_spalte == 1:
+               #print(int(np.argmax(spalte)),m)
+                print(m,'s',spalte)
+                a = clues(a,n,m + 1,int(np.argmax(spalte)) + 1)
+                run = 0
+                solved = check_sudoku(a)
+                print(a)
+
+    if run >= 3:
+        for n in range(1,10):
+            for m in range(9):
+                zeile = a[n,m,:]
+                pruef_zeile = check_list(zeile)
+                if pruef_zeile == 2 or pruef_zeile == 3:
+                    doubles = check_double(zeile,pruef_zeile)
+                   #print(doubles)
+                    if doubles[0] == True:
+                        if m in [0,3,6]:
+                            a[n,m+1:m+3,doubles[1]*3:(doubles[1]+1)*3] = 0
+                            print(a)
+                            
+                        elif m in [1,4,7]:
+                            a[n,m-1,doubles[1]*3:(doubles[1]+1)*3] = 0
+                            a[n,m+1,doubles[1]*3:(doubles[1]+1)*3] = 0
+                            print(a)
+                            
+                        else:
+                            a[n,m-2:m,doubles[1]*3:(doubles[1]+1)*3] = 0
+                            print(a)
+                            
+                            
+                spalte = a[n,:,m]
+                pruef_spalte = check_list(spalte)
+                if pruef_spalte == 2 or pruef_spalte == 3:
+                    doubles = check_double(spalte,pruef_spalte)
+                   #print(doubles)
+                    if doubles[0] == True:
+                        if m in [0,3,6]:
+                            a[n,doubles[1]*3:(doubles[1]+1)*3,m+1:m+3] = 0
+                            print(a)
+                            
+                        elif m in [1,4,7]:
+                            a[n,doubles[1]*3:(doubles[1]+1)*3,m-1] = 0
+                            a[n,doubles[1]*3:(doubles[1]+1)*3,m+1] = 0
+                            print(a)
+                            
+                        else:
+                            a[n,doubles[1]*3:(doubles[1]+1)*3,m-2:m] = 0 
+                            print(a)
+                            
+                            
 print(a)
