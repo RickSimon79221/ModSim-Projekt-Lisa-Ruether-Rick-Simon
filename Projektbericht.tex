@@ -22,14 +22,15 @@
 
 \newpage
 \section{Einleitung}
-Sudokus sind Logikrätsel die 1979 von Howard Garns erfunden und 1984 in Japan unter dem heutigen Namen populär wurden. Im Westen begann die Verbreitung des Sudokus mit einer erstmaligen Veröffentlichung in der New York Times im November 2004. Bei dem Rätsel selbst handelt es sich um Logikrätsel, die aus den lateinischen Quadraten entstanden sind. Ziel des Rätsels ist es, in einem 9x9 Quadrat in jede Zeile, jede Spalte und jedes 3x3 Quadrat die Zahlen von 1 bis 9 einzutragen.       
+Sudokus sind Logikrätsel die 1979 von Howard Garns erfunden und 1984 in Japan unter dem heutigen Namen populär wurden. Im Westen begann die Verbreitung des Sudokus mit einer erstmaligen Veröffentlichung in der New York Times im November 2004. Bei dem Rätsel selbst handelt es sich um Logikrätsel, die aus den lateinischen Quadraten entstanden sind. Ziel des Rätsels ist es, in einem 9x9 Quadrat in jede Zeile, jede Spalte und jedes 3x3 Quadrat die Zahlen von 1 bis 9 einzutragen. Ein ''gültiges'' Sudoku hat dabei aber immer nur eine Lösung. Um eine einzigartige Lösung zu besitzen, muss ein Sudoku mindestens 17 Hinweise haben, während Zeitungen und Magazine oft Sudokus mit 25 Hinweisen abdrucken.
+Unsere Motivation uns in unserem Projekt mit Sudokus zu beschäftigen, war, dass Sudokus die Art von Logikrätsel sind, die ein Computer viel besser lösen kann als ein Mensch. Zudem sollen Sudokus das Gehirn anregen, also kann dass schreiben zum lösen aller Sudokus auch nicht schaden.        
 
 \section{Vorhaben/Ziele}
 \subsection{Allgemein}
 Unser Projekt beschäftigt sich mit dem Lösen und Generieren von Sudokus mit Hilfe von Computern.   \\
 \ \\
 \subsection{Sudoku-Lösungsprogramm}
-Das Sudoku-Lösungsprogramm soll nicht nur zufällig Zahlen einsetzten, sondern ähnlich wie ein Mensch, logisch die gestellten Probleme lösen. Deshalb wird das Sudoku-Lösungsprogramm nur in der Lage sein Sudokus zu lösen, die eine einzige Lösung haben. Der Grund hierfür ist, dass bei Sudokus die zwei oder mehr Lösungen haben, an einem Punkt eine Zahl als Lösung des Sudokus geraten werden muss.\ \\
+Das Sudoku-Lösungsprogramm soll nicht nur zufällig Zahlen einsetzten, sondern ähnlich wie ein Mensch, logisch die gestellten Probleme angehen. Sollte es jedoch nicht möglich sein, nur mit Logik fortzusetzen, soll auch auf Trail-and-Error zurückgegriffen werden. Zudem soll es dem Programm möglich sein, ein nicht lösbares, sowie ein Sudoku mit mehreren Lösungen zu identifizieren. \ \\
 \ \\
 \subsection{Sudoku-Generator}
 Zudem untersuchen wir verschieden Arten Sudokus zu generieren. Als da wären zum Beispiel, dass zufällige einsetzen von Hinweisen in ein Leeres Sudoku oder auch das entnehmen von Zahlen aus einem bereits gelösten Sudoku. Bei unseren Untersuchungen betrachten wir vor allem ob ein generiertes Sudoku einzigartig-lösbar sind und wie lange es dauert ein einzigartig-lösbares Sudoku zu generieren bei verschiedenen Methoden.
@@ -101,7 +102,7 @@ Der nächste Schritt war es, eine Funktion zu schreiben mit der wir Einträge in
 \begin{center}
 \includegraphics[width=0.33\textwidth]{sudoku2.pdf}
 \end{center}
-\caption{Felder die Beeinflusst werden}
+\caption{Felder die beeinflusst werden}
 \end{figure}
 \ \\ 
 In dem Vorliegenden Beispiel kann, aufgrund der Acht, weder in der vierten Zeile, Spalte oder dem Mittleren 3x3 Kästchen eine Acht stehen. Außerdem kann natürlich auch im Feld in dem die Acht steht, keine andere Zahl mehr stehen. Die Funktion die das Sudoku entsprechend ändert, sieht wie folgt aus:
@@ -501,7 +502,7 @@ Sollte der unwahrscheinliche Fall eintreten, dass es kein leeres Feld mit zwei o
 
 \newpage
 \subsection{Gelöste Rätsel}
-Hier nun eine Liste von Sudokus mit denen wir unser Programm  überprüft haben. Zum Zwecke der Wiederholbarkeit, haben wir Sudokus von der Internet-Seite http://www.sudoku17.de . Dort hat jedes Sudoku eine eigene Nummer, mit der es immer wieder aufgerufen werden kann. So stellen wir hier eine Liste der Nummern der Sudokus auf, an denen wir unser Programm getestet haben.
+Hier nun eine Liste von Sudokus mit denen wir unser Programm  überprüft haben. Zum Zwecke der Wiederholbarkeit, haben wir Sudokus von der Internet-Seite http://www.sudoku17.de . Dort hat jedes Sudoku eine eigene Nummer, mit der es immer wieder aufgerufen werden kann. So stellen wir hier eine Liste der Nummern der Sudokus auf, an denen wir unser Programm getestet haben, alle davon rangieren im höchsten Schwierigkeitsgrad.
 \begin{itemize}
 \item 71230
 \item 7315
@@ -756,7 +757,7 @@ Hinweise & Eine Loesung & Zwei oder mehr Loesungen\\ \hline
  81 & 500 & 0 \\ \hline 
  \end{tabular}
  \end{center}
- \caption{Test1} 
+ \caption{Test 1: Sudoku generieren durch zufälliges herausnehmen von Zahlen} 
 \end{table} 
 \ \\
 Die folgende Graphische Darstellung zeigt, wie sich die Wahrscheinlichkeiten ein Sudoku mit einer einzigen Lösung und ein Sudoku mit zwei oder mehr Lösungen zu generieren mit zunehmender Anzahl verhalten.
@@ -765,179 +766,343 @@ Die folgende Graphische Darstellung zeigt, wie sich die Wahrscheinlichkeiten ein
 \begin{center}
 \includegraphics[width=1\textwidth]{Test1ABB.pdf}
 \end{center}
-\caption{Wahrscheinlichkeiten Sudokus bestimmter Lösbarkeit zu generieren}
+\caption{Test 1: Wahrscheinlichkeiten Sudokus bestimmter Lösbarkeit zu generieren}
 \end{figure}
 \ \\ 
 Die Auswertung zeigt ganz klar die Stärken dieser Methode auf. Zum einen sind alle Sudokus die wir generieren entweder einfach oder mehrfach lösbar, es kann aber nie passieren, dass eines unserer Sudokus keine Lösung aufweist. Des Weiteren fällt auf, dass die Anzahl von Sudokus mit einer einzigen Lösung nahe zu logistisch zunimmt. So, müssen wir nicht allzu lange suchen, wenn wir ein einzigartig lösbares Sudoku mit 30 oder mehr Hinweisen generieren wollen.
 Allerdings bedeutet das auch, dass wir signifikant länger suchen müssen, wenn es darum geht ein Sudoku mit 20 oder weniger Hinweisen zu finden.
- 
-\subsubsection{Test 2: Sudoku generieren durch zufälliges Hinzufügen ohne Regel}
-\ \\
-\begin{verbatim}
-ergebnisse = []                       
-pos = [1,2,3,4,5,6,7,8,9]             
-for N in range(17,82):                
 
-    null = 0                          
-    eins = 0                          
-    zwei = 0                          
-    
-    print(N)                          
-    for n in range(500):              
-        sudoku = empty_sudoku()       
-        c = 0                         
-        while c < N:                                     
-            x = np.random.choice(pos) - 1                
-            y = np.random.choice(pos) - 1                
-            z = np.random.choice(pos)                    
-            if sudoku[0,y,x] == 0:                       
-                sudoku = clues(sudoku,z,x + 1,y + 1)     
-                c = c + 1                                
-        
-        SUSO = SudokuSolve(sudoku)         
-        
-        if SUSO[0] == 'Keine Lösung':     
-            null = null + 1               
-                                           
-        elif SUSO[0] == 'Zwei Lösungen':   
-            zwei = zwei + 1                
-                                           
-        elif SUSO[0] == 'Eine Lösung':     
-            eins = eins + 1                
-            
-    ergebnisse.append([null,eins,zwei]) 
+\newpage
+\subsubsection{Test 2: Sudoku generieren durch zufälliges Hinzufügen ohne Regel}
+Das nächste Verfahren, welches wir untersuchen wollten, war: Das Generieren von Sudokus durch zufälliges Einsetzen von Zahlen in ein leeres Sudoku. Das allgemeine Verfahren blieb dabei im Vergleich zum vorigen Test das Gleiche. Deswegen hier nur das Stück Code, welches das Sudoku erstellt:
+\ \\
+\begin{verbatim}                     
+pos = [1,2,3,4,5,6,7,8,9]             
+sudoku = empty_sudoku()       
+c = 0                         
+while c < N:                                     
+    x = np.random.choice(pos) - 1                
+    y = np.random.choice(pos) - 1                
+    z = np.random.choice(pos)                    
+    if sudoku[0,y,x] == 0:                       
+        sudoku = clues(sudoku,z,x + 1,y + 1)     
+        c = c + 1                                 
 \end{verbatim}
 \ \\
+
+Wie wir erwartet haben, führt unreguliertes einsetzen von Zufallszahlen nur dazu, dass wir widersprüchliche Sudoku-Puzzle bekommen. Wie eindeutig dies aber schon bei geringen Anzahlen von Hinweisen ist, hat uns doch überrascht. 
 
 \subsubsection{Test 3: Sudoku generieren durch zufälliges Hinzufügen mit mäßigen Regel}
+Als nächstes haben wir uns damit beschäftigt, dass vorangegangene Verfahren zu verbessern. Eine Bedingung, damit ein Sudoku eindeutig lösbar ist, die wir durch Recherche herausgefunden haben, war, dass mindesten 8 von 9 Zahlen im Sudoku verwendet worden sein müssen. Aus diesem Grund haben wir den nächsten Generator so programmiert, dass die ersten acht zahlen die er einsetzt alle verschieden sind:  
 \ \\
-\begin{verbatim}
-ergebnisse = []                          
+\begin{verbatim}                 
 korr = [0,1,2,3,4,5,6,7,8]               
 pos = [1,2,3,4,5,6,7,8,9]                
-for N in range(17,82):                   
-
-    null = 0                             
-    eins = 0                             
-    zwei = 0                             
-    
-    for n in range(500):                 
-        sudoku = empty_sudoku()          
-        c = 0                            
-        while c < N:                                  
-            x = np.random.choice(korr)                
-            y = np.random.choice(korr)                
-            z = np.random.choice(pos)                 
-            if sudoku[0,y,x] == 0:                    
-                sudoku = clues(sudoku,z,x + 1,y + 1)  
-                c = c + 1                             
-                if c < 8:                             
-                    pos.remove(z)                     
+sudoku = empty_sudoku()          
+c = 0                            
+while c < N:                                  
+    x = np.random.choice(korr)                
+    y = np.random.choice(korr)                
+    z = np.random.choice(pos)                 
+    if sudoku[0,y,x] == 0:                    
+        sudoku = clues(sudoku,z,x + 1,y + 1)  
+        c = c + 1                             
+        if c < 8:                             
+            pos.remove(z)                     
                 
-                else:                                 
-                    pos = [1,2,3,4,5,6,7,8,9]         
-                    
-        
-        SUSO = SudokuSolve(sudoku)         
-        if SUSO[0] == 'Keine Lösung':      
-            null = null + 1                
-        elif SUSO[0] == 'Zwei Lösungen':  
-            zwei = zwei + 1                                               
-        elif SUSO[0] == 'Eine Lösung':     
-            eins = eins + 1                
-    
-    ergebnisse.append([null,eins,zwei])    
+        else:                                 
+            pos = [1,2,3,4,5,6,7,8,9]                           
 \end{verbatim}
 \ \\
+Wir haben nicht viel erwartet, aber das Ergebnis hat uns überrascht. Anstatt 16 Sudokus mit zwei oder mehr Lösungen, gab uns dieser Generator vierzig. Die Verteilung dieser sieht man in der folgenden Tabelle:
+
+\begin{table}[htbp!] 
+\scriptsize
+\begin{center}
+\begin{tabular}{|*{3}{c|}}
+\hline 
+Hinweise & Keine Lösung & Zwei oder mehr Lösungen\\ \hline 
+17 & 482 & 18 \\ \hline 
+ 18 & 490 & 10 \\ \hline 
+ 19 & 494 & 6 \\ \hline 
+ 20 & 497 & 3 \\ \hline 
+ 21 & 498 & 2 \\ \hline 
+ 22 & 500 & 0 \\ \hline 
+ 23 & 500 & 0 \\ \hline 
+ 24 & 499 & 1 \\ \hline 
+ 25 & 500 & 0 \\ \hline 
+ 26 & 500 & 0 \\ \hline 
+ 27 & 500 & 0 \\ \hline 
+ 28 & 500 & 0 \\ \hline 
+ 29 & 500 & 0 \\ \hline 
+ 30 & 500 & 0 \\ \hline 
+ 31 & 500 & 0 \\ \hline 
+ 32 & 500 & 0 \\ \hline 
+ 33 & 500 & 0 \\ \hline 
+ 34 & 500 & 0 \\ \hline 
+ 35 & 500 & 0 \\ \hline 
+ 36 & 500 & 0 \\ \hline 
+ 37 & 500 & 0 \\ \hline 
+ 38 & 500 & 0 \\ \hline 
+ 39 & 500 & 0 \\ \hline 
+ 40 & 500 & 0 \\ \hline 
+ 41 & 500 & 0 \\ \hline 
+ 42 & 500 & 0 \\ \hline 
+ 43 & 500 & 0 \\ \hline 
+ 44 & 500 & 0 \\ \hline 
+ 45 & 500 & 0 \\ \hline 
+ 46 & 500 & 0 \\ \hline 
+ 47 & 500 & 0 \\ \hline 
+ 48 & 500 & 0 \\ \hline 
+ 49 & 500 & 0 \\ \hline 
+ 50 & 500 & 0 \\ \hline 
+ 51 & 500 & 0 \\ \hline 
+ 52 & 500 & 0 \\ \hline 
+ 53 & 500 & 0 \\ \hline 
+ 54 & 500 & 0 \\ \hline 
+ 55 & 500 & 0 \\ \hline 
+ 56 & 500 & 0 \\ \hline 
+ 57 & 500 & 0 \\ \hline 
+ 58 & 500 & 0 \\ \hline 
+ 59 & 500 & 0 \\ \hline 
+ 60 & 500 & 0 \\ \hline 
+ 61 & 500 & 0 \\ \hline 
+ 62 & 500 & 0 \\ \hline 
+ 63 & 500 & 0 \\ \hline 
+ 64 & 500 & 0 \\ \hline 
+ 65 & 500 & 0 \\ \hline 
+ 66 & 500 & 0 \\ \hline 
+ 67 & 500 & 0 \\ \hline 
+ 68 & 500 & 0 \\ \hline 
+ 69 & 500 & 0 \\ \hline 
+ 70 & 500 & 0 \\ \hline 
+ 71 & 500 & 0 \\ \hline 
+ 72 & 500 & 0 \\ \hline 
+ 73 & 500 & 0 \\ \hline 
+ 74 & 500 & 0 \\ \hline 
+ 75 & 500 & 0 \\ \hline 
+ 76 & 500 & 0 \\ \hline 
+ 77 & 500 & 0 \\ \hline 
+ 78 & 500 & 0 \\ \hline 
+ 79 & 500 & 0 \\ \hline 
+ 80 & 500 & 0 \\ \hline 
+ 81 & 500 & 0 \\ \hline 
+ \end{tabular} 
+ \end{center}
+ \caption{Test 3: Sudoku generieren durch zufälliges Hinzufügen mit mäßigen Regel}
+\end{table} 
+
 
 \subsubsection{Test 4: Sudoku generieren durch zufälliges Hinzufügen mit strengen Regel}
+Zuletzt haben wir die Bedingung hinzugefügt, dass beim setzen einer Zahl darauf geachtet wird, dass die Zahl in der Spalte, Zeile und dem 3x3 Kästchen noch nicht vorkommt. Sollte auf diese Weise keine Zahl gesetzt werden können, so soll das Programm von vorne Beginnen. Auf diese Weise haben wir uns erhofft, viel weniger Sudokus ohne Lösung und unter Umständen vielleicht auch welche mit die eindeutig Lösbar sind
 \ \\
-\begin{verbatim}
-ergebnisse = []                          
-korr = [0,1,2,3,4,5,6,7,8]               
-pos = [1,2,3,4,5,6,7,8,9]                
-for N in range(17,82):                   
-
-    null = 0                             
-    eins = 0                             
-    zwei = 0                             
-    
-    for n in range(500):                 
-        sudoku = empty_sudoku()          
-        c = 0                            
-        while c < N:                                  
-            x = np.random.choice(korr)                
-            y = np.random.choice(korr)                
-            z = np.random.choice(pos)                
-            pruef = mklstP(x,y,sudoku)                
-            if sudoku[0,y,x] == 0 and z in pruef:     
-                sudoku = clues(sudoku,z,x + 1,y + 1)  
-                c = c + 1                             
-                if c < 8:                             
-                    pos.remove(z)                     
-                                                      
-                else:                                 
-                    pos = [1,2,3,4,5,6,7,8,9]         
+\begin{verbatim}                       
+pos = [1,2,3,4,5,6,7,8,9]                             
+sudoku = empty_sudoku()          
+c = 0                            
+pairs = [[x,y] for x in range(9) for y in range(9)]
+shuffle(pairs)
+while c < N:                                  
+    koor = pairs[0]
+    x = koor[0]                               
+    y = koor[1]                               
+    z = np.random.choice(pos)                 
+            
+    pruef = mklstP(x,y,sudoku)                
+    if sudoku[0,y,x] == 0 and z in pruef:     
+        sudoku = clues(sudoku,z,x + 1,y + 1)  
+        c = c + 1                             
+        pairs.remove(koor)
+        if c < 8:                             
+            pos.remove(z)                     
+                                                     
+        else:                                 
+            pos = [1,2,3,4,5,6,7,8,9]         
                     
-            elif sudoku[0,y,x] == 0 and pruef == []:  
-                sudoku = empty_sudoku()               
-                c = 0                                 
-
-        SUSO = SudokuSolve(sudoku)         
-        if SUSO[0] == 'Keine Lösung':      
-            null = null + 1                
-                                           
-        elif SUSO[0] == 'Zwei Lösungen':   
-            zwei = zwei + 1                
-                                           
-        elif SUSO[0] == 'Eine Lösung':     
-            eins = eins + 1                
-    
-    ergebnisse.append([null,eins,zwei])    
+    elif sudoku[0,y,x] == 0 and pruef == []:  
+        sudoku = empty_sudoku()               
+        c = 0                                 
+        pairs = [[x,y] for x in range(9) for y in range(9)]
+        shuffle(pairs)
 \end{verbatim}
 \ \\
+Das Ergebnis hat unsere Erwartungen erfüllt in der Hinsicht, dass viel mehr Sudokus mit zwei oder mehr Lösungen generiert wurden, sowie einige mit einer eindeutigen Lösung. Allerdings haben sich auch einige andere Probleme offenbart. So braucht dieser Generator für zunehmende Anzahl von Hinweisen signifikant länger, nur um ein zu überprüfendes Sudoku zu generieren, weshalb wir den Test bei 64 Hinweisen abgebrochen haben. Nun mag es eigenartig erscheinen, dass der Computer zum generieren von vollständigen Sudokus viel weniger Zeit braucht, ob wohl er bei beiden eine ähnliche Technik verwendet. Der Grund dafür liegt tatsächlich in diesem kleinen Unterschied der Vorgehensweise. Bei der Generierung der vollständigen Sudokus geht der Computer Zeile für Zeile, Feld für Feld durch, dabei beeinflussen sich die gesetzt Zahlen direkt, da sie oft im selben 3x3 Kästchen und noch häufiger in der selben Zeile sind. So ist die Auswahl beim setzen einer neuen Zahl viel geringer. Anders beeinflussen sich hintereinander gesetzte Zahlen beim zufälligen einfügen fast nie, die Zahlen werden gesetzt, obwohl dies bedeutet, dass in ein anderes Feld vielleicht keine Zahl mehr gesetzt werden kann, so kommt es meistens nach 40-50 gesetzten Zahlen vor, dass der Computer ein leeres Feld findet, in welches keine Zahlen mehr kommen können.\\
+So machte die Generierung von Sudoku-Puzzles Probleme. Aber auch das Lösen der generierten Sudokus konnte unter Umständen sehr lange dauern. Dies hing damit zusammen, dass wenn es darum geht Sudokus zu überprüfen, die keine Lösung haben, der Computer alle möglichen Kombinationen probieren muss, bis er tatsächlich sagen kann, dass ein Sudoku keine Lösung hat. Hat ein Sudoku mehrere Lösungen oder auch nur eine, dann können oft viele Schritte der Force-Chain übersprungen werden. Hat das Sudoku allerdings keine Lösung und widerspricht sich nicht auf den ersten Blick (also, dass Beispielsweise die gleiche Zahl zweimal in einer Zeile vorkommt), dann kann es durchaus länger dauern, die Lösbarkeit eines Sudokus zu überprüfen. In der folgenden Tabelle dann nun die Ergebnisse dieses Tests.
+\ \\       
+\begin{table}[htbp!]
+\scriptsize
+\begin{center}
+\begin{tabular}{|*{4}{c|}}
+\hline 
+Hinweise & Keine Loesung & Eine Loesung & Zwei oder mehr Loesungen\\ \hline 
+17 & 43 & 0 & 457 \\ \hline 
+ 18 & 49 & 0 & 451 \\ \hline 
+ 19 & 66 & 0 & 434 \\ \hline 
+ 20 & 118 & 0 & 328 \\ \hline 
+ 21 & 177 & 0 & 323 \\ \hline 
+ 22 & 222 & 0 & 278 \\ \hline 
+ 23 & 276 & 0 & 224 \\ \hline 
+ 24 & 309 & 1 & 190 \\ \hline 
+ 25 & 349 & 1 & 150 \\ \hline 
+ 26 & 402 & 3 & 95 \\ \hline 
+ 27 & 444 & 2 & 54 \\ \hline 
+ 28 & 476 & 1 & 32 \\ \hline 
+ 29 & 484 & 1 & 15 \\ \hline 
+ 30 & 486 & 0 & 14 \\ \hline 
+ 31 & 495 & 1 & 4 \\ \hline 
+ 32 & 498 & 0 & 2 \\ \hline 
+ 33 & 498 & 2 & 0 \\ \hline 
+ 34 & 499 & 0 & 1 \\ \hline 
+ 35 & 500 & 0 & 0 \\ \hline 
+ 36 & 500 & 0 & 0 \\ \hline 
+ 37 & 500 & 0 & 0 \\ \hline 
+ 38 & 500 & 0 & 0 \\ \hline 
+ 39 & 500 & 0 & 0 \\ \hline 
+ 40 & 499 & 0 & 1 \\ \hline 
+ 41 & 500 & 0 & 0 \\ \hline 
+ 42 & 500 & 0 & 0 \\ \hline 
+ 43 & 500 & 0 & 0 \\ \hline 
+ 44 & 500 & 0 & 0 \\ \hline 
+ 45 & 500 & 0 & 0 \\ \hline 
+ 46 & 500 & 0 & 0 \\ \hline 
+ 47 & 500 & 0 & 0 \\ \hline 
+ 48 & 500 & 0 & 0 \\ \hline 
+ 49 & 500 & 0 & 0 \\ \hline 
+ 50 & 500 & 0 & 0 \\ \hline 
+ 51 & 500 & 0 & 0 \\ \hline 
+ 52 & 500 & 0 & 0 \\ \hline 
+ 53 & 500 & 0 & 0 \\ \hline 
+ 54 & 500 & 0 & 0 \\ \hline 
+ 55 & 500 & 0 & 0 \\ \hline 
+ 56 & 500 & 0 & 0 \\ \hline 
+ 57 & 500 & 0 & 0 \\ \hline 
+ 58 & 500 & 0 & 0 \\ \hline 
+ 59 & 500 & 0 & 0 \\ \hline 
+ 60 & 500 & 0 & 0 \\ \hline 
+ 61 & 500 & 0 & 0 \\ \hline 
+ 62 & 500 & 0 & 0 \\ \hline 
+ 63 & 500 & 0 & 0 \\ \hline 
+ 64 & 500 & 0 & 0 \\ \hline  
+ \end{tabular}
+ \end{center}
+  \caption{Test 4: Sudoku generieren durch zufälliges Hinzufügen mit strengen Regel} 
+\end{table}
+\ \\ 
+Zunächst eine Darstellung der Wahrscheinlichkeiten bei diesem Verfahren
+\newpage
+\begin{figure}[htbp!]
+\begin{center}
+\includegraphics[width=1\textwidth]{test4.pdf}
+\end{center}
+\caption{Test 4: Wahrscheinlichkeiten Sudokus bestimmter Lösbarkeit zu generieren}
+\end{figure}
+\ \\  
+Und nun ein Vergleich dieser Methode mit den beiden vorigen Methoden zum zufälligen einsetzen.
+\ \\
+\begin{figure}[htbp!]
+\begin{center}
+\includegraphics[width=1\textwidth]{vergTest234.pdf}
+\end{center}
+\caption{Vergleich von Test 2, Test 3 und Test 4}
+\end{figure}
+\ \\
+Es ist sehr deutlich, wie die letzte Variante mehr lösbare Sudokus hervorbringt, als die beiden zuvor. Allerdings wird genauso deutlich, dass Sudokus mit mehr als 30 Hinweisen, nur sehr selten lösbar sind. Deshalb haben wir beschlossen nun die erste Variante weiter zu verbessern. 
+\newpage
 
 \subsubsection{Test 5: Sudoku generieren durch zufälliges herausnehmen von Zahlen mit Regeln}
+Um die erste Version des Generators zu verbessern, mussten wir herausfinden, wann ein Sudoku zwei oder mehr Lösungen haben kann. Durch ausprobieren und selbst Sudokus lösen, fanden wir, was man ''unavoidable squares'' nennt. Es sind gewisse Konstellationen die man in fertigen Sudokus finden kann. Was diese Konstellationen auszeichnet, ist, dass immer mindestens eines der Felder von diesen Konstellationen gegeben sein muss, um ein eindeutig lösbares Sudoku zu erhalten. Ein Beispiel verdeutlicht, warum dies der Fall ist. 
 \ \\
-\begin{verbatim}
-ergebnisse = []                       # Liste der Ergenisse für die einzelnen Hinweiszahlen 
-for N in range(17,82):                # Es wird ueber alle moeglichen Hinweiszahlen iteriert 
-
-    null = 0                          # Diese Variable speichert die Anzahl an nicht loesbaren Sudokus
-    eins = 0                          # Diese Variable speichert die Anzahl an einzigartig loesbaren Sudokus
-    zwei = 0                          # Diese Variable speichert die Anzahl an verschieden loesbaren Sudokus
-    
-    print(N)                          # gibt die Zahl der Ausgangshinweise aus
-    for n in range(500):              # erstellt und ueberprueft 500 Sudokus
-        quest = make_uas_sudoku(N)        # erstellt das Sudoku durch zufaelliges wegnehmen aus vollstaendigen Sudokus
-        
-        sudoku = empty_sudoku()                                    # macht aus dem erstellten Sudoku
-        for y in range(1,10):                                      # eines welches fuer den Loeser 
-            for x in range(1,10):                                  # passend ist.
-                if quest[y-1,x-1] != 0:                            # 
-                    sudoku = clues(sudoku,int(quest[y-1,x-1]),x,y) # 
-        
-
-        SUSO = SudokuSolve(sudoku)         # Loest Sudoku
-        print(n,SUSO[0])                   # gibt Loesbarkeit des Sudokus aus
-        
-        if SUSO[0] == 'Keine Lösung':      # Loesbarkeit des Sudokus wird verglichen und  
-            null = null + 1                # Variablen werden veraendert
-                                           #
-        elif SUSO[0] == 'Zwei Lösungen':   #
-            zwei = zwei + 1                #
-                                           #
-        elif SUSO[0] == 'Eine Lösung':     #
-            eins = eins + 1                #
-    
-    print([null,eins,zwei])                # gibt Loesbarkeiten fuer Hinweiszahl aus
-    ergebnisse.append([null,eins,zwei])    # erweitert Liste der Ergebnisse
-
-print(ergebnisse)
+\begin{figure}[htbp!]
+\begin{center}
+\includegraphics[width=0.33\textwidth]{UAS.pdf}
+\end{center}
+\caption{Unavoidable Squares}
+\end{figure}
+\ \\
+Betrachtet man in diesem Sudoku beispielsweise die rot markierten Felder, dann fällt auf, dass man durch vertauschen der Dreien mit den Siebenen ebenfalls wieder ein vollständiges Sudoku erhält. Sind diese vier Felder allerdings leer, kann man nicht sagen, in welches Feld, welche Zahl soll: Ergo, das Sudoku hat zwei Lösungen.\\
+Dies Arten von ''unavoidable sets'' sind nur die einfachsten von sogenannten ''unavoidable squares'', welche viele möglichen Formen und Ausmaßen annehmen kann,  und einen Funktion, welche alle ''unavoidable sets'' in einem Sudoku findet, ist sehr aufwendig und würde hier den Rahmen sprengen. Deshalb haben wir uns darauf konzentriert, zunächst nur die ''unavoidable squares'' ausfindig zu machen und dafür zu sorgen, dass mindestens eine von diesen Zahlen in dem Sudoku-Puzzle enthalten ist. So schrieben wir zunächst die folgende Funktion, welche die ''unavoidable squares'' eines Sudokus in Form einer Liste zurückgibt:
+\ \\
+\begin{verbatim}   
+def find_unavoidable_squares(sudoku):
+    squares = []
+    for y in range(8):
+        for x in range(8):
+            num = sudoku[y,x]
+            if num != 0:
+                numRight = sudoku[y,x+1]
+                for n in range(y+1,9):
+                    counterRight = sudoku[n,x]
+                    counterNum = sudoku[n,x+1]
+                    if counterRight == numRight and counterNum == num:
+                        UAS = [(x,y),(x+1,y),(x,n),(x+1,n)]
+                        squares.append(UAS)
+            
+                numDown = sudoku[y+1,x]
+                for m in range(x+1,9):
+                    counterDown = sudoku[y,m]
+                    counterNum = sudoku[y+1,m]
+                    if counterDown == numDown and counterNum == num:
+                        UAS = [(x,y),(x,y+1),(m,y),(m,y+1)]
+                        squares.append(UAS)
+            
+    return(squares)
 \end{verbatim}
 \ \\
+Diese Funktion gibt eine Liste von ''unavoidable squares'' aus und im folgenden ist der Generator, welcher mit dieser Funktion Sudoku-Puzzles erstellt.
+\ \\
+\begin{verbatim}   
+def make_uas_sudoku(N):
+    no_sudoku = True            
+    while no_sudoku == True:    
+        sudoku = SudokuGen()    
+        shuffs = 0              
+        while shuffs != 25:     #
+            pairs = [[x,y] for x in range(9) for y in range(9)]  
+            squares = find_unavoidable_squares(sudoku)           
+            shuffle(pairs)                                       
+            shuffs = shuffs + 1                                  
+            pairs = np.array(pairs)                              
+            runs = 0                                             
+            copyshuff = np.copy(sudoku)                           
+            while len(pairs) != N:                               
+                copy = np.copy(copyshuff)                        
+                check_squares = False                            
+                for n in squares:                                
+                    for m in n:                                                    
+                        if np.array_equal(m,pairs[runs]) == True and len(n) == 1:  
+                            check_squares = True                                   
+                
+                runs = runs + 1                       
+                if check_squares == False:                       
+                    copy[pairs[runs][1],pairs[runs][0]] = 0      
+                    copyshuff = np.copy(copy)                   
+                    pairs = np.delete(pairs,runs-1,0) 
+                    runs = 0
+                    
+                if (runs+1) == len(pairs):                                
+                    break                                                 
+                                                                          
+            if len(pairs) == N:                      
+                sudoku = np.copy(copyshuff)          
+                break                                
+        if len(pairs) == N:                
+            no_sudoku = False              
+   
+    return(sudoku)    
+\end{verbatim}
+\ \\
+Der Generator erstellt zunächst ein vollständiges Sudoku, sowie eine vollständige Liste aller Koordinaten der besetzten Felder. Dann werden aus diesem Sudoku die die ''unavoidable squares'' herausgesucht und in die Liste squares geschrieben.
+Die Liste der Koordinaten wird gemischt und dann durchgegangen. Ist eine Koordinate der letzte Teil eines ''unavoidable squares'', so wird diese übersprungen. Alle Koordinaten die nicht übersprungen werden, werden in einer Kopie des Sudokus geleert, bis die gewünschte Anzahl an Hinweisen erreicht ist. Sollte es passieren, dass keine weitere Zahl entfernt werden kann, ohne dass ein ''unavoidable squares'' vollständig geleert wird, wird die Kopie des Sudokus zurückgesetzt und die Reihenfolge der Koordinaten neu gemischt. Sollte 25-maliges mischen nichts bewirken, wird ein neues Sudoku generiert. Hat aber die Kopie des Sudokus die gewünschte Hinweiszahl erreicht, wird dieses Sudoku ausgegeben.
+\ \\
+• Hier kommt noch die Auswertung hin \\
+•\\
+•\\
+•\\
+\newpage
 
 \subsection{Generator zum erstellen von Sudokus}
+Nachdem wir unser Verfahren verbessert haben und weitere Verbesserungen( das lokalisieren aller möglichen ''unavoidable Sets'') hier nicht möglich ist, haben wir versucht einen richtigen Sudoku-Generator zu erstellen. Dieser soll für eine gegebene Anzahl an Hinweisen N, ein eindeutig lösbares Sudoku-Puzzle generieren. Dabei wird im allgemeinen das Verfahren aus Test 5 verwendet, mit dem Unterschied, dass bevor eine Zahl entfernt wird, überprüft wird, ob das entfernen dieser Zahl, dafür sorgt, dass das Sudoku-Puzzle mehrere Lösungen hat. Wenn ja, wird diese Zahl nicht entfernt. So soll die Eindeutigkeit des Sudokus garantiert werden. Sollte der Generator einen Punkt erreichen, an dem er keine Zahl entfernen kann, ohne ein mehrdeutiges Sudoku zu erzeugen, mischt er die Reihenfolge in der er vorgeht neu und versucht es wieder. Sollte 25-maliges neu mischen nicht zum Erfolg führen, wird wie bei Test 5 ein neues vollständiges Sudoku generiert, an welchem das Prozedere wiederholt wird.\\
+Der Code für diesen letzten Generator sieht wie folgt aus:
 \ \\
 \begin{verbatim}
 def final_sudoku_generator(N):
@@ -998,6 +1163,52 @@ def final_sudoku_generator(N):
     return(sudoku)
 \end{verbatim}
 \ \\
+Wir haben somit einen funktionierenden Generator von Sudokus. In einem letzten Test, wollten wir herausfinden, wie lange unser Generator braucht um bestimmte Sudokus zu generieren. Da es stark vom Zufall abhängt, wie lange der Generator braucht, um ein Sudoku zu generieren, haben wir ihn mit diesem Code immer gleich zehn Sudoku hintereinander generieren lassen:
+\ \\
+\begin{verbatim}
+from timeit import default_timer as timer
+times = []
+hinweise = range(17,81)
+hinweise = np.array(hinweise)
+hinweise = hinweise[::-1]
+for N in hinweise:
+    print(N)
+    # START MY TIMER
+    start = timer()
+    for n in range(10):
+        final_sudoku_generator(N)
+    # STOP MY TIMER
+    elapsed_time = timer() - start # in seconds
+    print(elapsed_time)
+    times.append(elapsed_time)
+print(elapsed_time)
+\end{verbatim}
+\ \\
+Die Ergebnisse finden sich in der folgenden Tabelle:
+\newpage
+• Hier kommen die Ergebnisse hin •\\
+•\\
+•\\
+\newpage
+• Hier kommt Grafik der Ergebnisse hin •\\
+\\
+\\
+• Abschlussfazit zu generator
+
+\section{Fazit} 
+Unser Ziel war es, ein funktionierendes Sudoku-Lösungsprogramm zu erstellen. Dies ist uns gelungen. Unser Sudoku-Löser löst eindeutig lösbare Sudokus innerhalb von Bruchteilen einer Sekunde. Allerdings kann er bei Sudokus ohne Lösung und Sudokus mit zwei oder mehr Lösungen etwas länger brauchen.\\
+Unser zweites Ziel, auf verschiedene Weisen Sudokus zu generieren und deren Lösbarkeit zu überprüfen haben wir auch erfüllt. Es hat sich herausgestellt, dass eindeutig lösbare Sudokus sehr selten sind und dass die zu bevorzugende Weise sie zu generieren, darin besteht aus einem bereits vollständigen Sudoku, unter Beachtung von ''unavoidable sets'', Zahlen zu entfernen.\\
+Zuletzt haben wir einen Sudoku-Generator geschrieben, welcher Sudokus mit 23 oder mehr Hinweisen in akzeptabler Zeit erstellen kann. Eindeutig lösbare Sudokus mit weniger Hinweisen sind nämlich sehr selten. Die größte Liste, die wir gefunden haben, von eindeutig lösbare Sudokus mit 17 Hinweisen enthält 50.000 Sudokus, was im Anbetracht der Menge der möglichen Sudokus extrem klein ist.
+
+\section{Literaturverzeichnis}
+The Detection of Unavoidable Sets in Sudoku Grids of Different
+Sizes; Daniel Williams, University of Glamorgan, April 4, 2011\\
+\ \\
+Mathematics of Sudoku I; Bertram Felgenhauer and Frazer Jarvis, February 15, 2006\\
+\ \\
+There is no 16-Clue Sudoku: Solving the Sudoku Minimum Number of Clues Problem via Hitting Set Enumeration; Gary McGuire, Bastian Tugemann, Gilles Civario, August 31, 2013\\
+\ \\
+SUDOKU - Strategien zur Lösung; Wolfgang Urban, HIB Wien,  8/2006 
 
 
 \end{document}
