@@ -184,38 +184,52 @@ def take_sudoku(N):
 ### mehr als 3 Felder eines UAS leer sind
 
 def make_uas_sudoku(N):
-    pos = [0,1,2,3,4,5,6,7,8]                   # Liste moeglicher Koordinaten
-    quest = SudokuGen()                         # generiert vollstaendiges Sudoku
-    k = check_listG(quest.reshape(81))        # speichert die Anzahl der gefuellten Felder in k 
-    squares = find_unavoidable_squares(quest)   # erstellt Liste von UAS
-    while k != N:                                  # solange die Zahl an gefuellten Feldern nicht N ist:
-        x = np.random.choice(pos)                  # werden zufaellig x- und y-Koordinaten gewaehlt
-        y = np.random.choice(pos)                  # und in pair geschrieben
-        pair = (x,y)                               #
-        for n in squares:                            # Es werden alle Koordinaten-Paare in squares
-            for m in n:                              # durchgegangen
-                if m == pair and len(n) > 1:            # Sollten die Koordinaten in pairs teil eines UAS sein,
-                    n.remove(m)                         # welches noch zwei oder mehr Elemente hat, so wird dass
-                    quest[y,x] = 0                      # Feld gleich Null und das Koordnínaten-Paar aus squares
-                                                        # entfernt
+    no_sudoku = True            # Variable speichert ob ein Sudoku-Puzzle gefunden wurde
+    while no_sudoku == True:    # Solange kein Sudoku-Puzzle gefunden wurde:
+        sudoku = SudokuGen()    # Generiert vollstaendiges Sudoku
+        shuffs = 0              # Variable speichert wie oft neu gemischt wurde
+        while shuffs != 25:     # Es soll hoechstens 25 al neu gemischt werden
+            pairs = [[x,y] for x in range(9) for y in range(9)]  # Liste aller moeglichen Koordinatenpaare
+            squares = find_unavoidable_squares(sudoku)           # Liste von UAS
+            shuffle(pairs)                                       # mischt Elemente von pairs
+            shuffs = shuffs + 1                                  # erhoeht shuffs um 1
+            pairs = np.array(pairs)                              # macht pairs zu array
+            runs = 0                                             # Anzahl der Durchlaeufe der folgenden Schleife
+            copyshuff = np.copy(sudoku)                          # Kopie des Sudokus, die bearbeitet wird
+                                                                 # Jedes Sudoku soll mit 25 verschieden gemischten
+                                                                 # Liste pairs bearbeitet werden
             
-                elif m != pair :                        # sollte das Koordinaten-Paar nicht in squares sein, 
-                    quest[y,x] = 0                      # wird der Inhalt des Feldes gleich Null gesetzt.
-                                                        
-                                                        # Ist pairs Teil eines UAS, welches aber nur noch
-                                                        # ein Element hat, so wird dieses Feld uebersprungen
-                                                        # ohne mit ihm etwas zu machen.
-       
-        k = check_listG(quest.reshape(81))     # zuletzt wird k aktualisiert
+            while len(pairs) != N:                               # Solange Anzahl der Hinweise N nicht erreicht ist:
+                copy = np.copy(copyshuff)                        # erstellt eine Kopie der Kopie.
+                check_squares = False                            # ueberprueft ob das Element mit Indiz run aus pairs
+                for n in squares:                                # einziges Teil eines UAS ist
+                    for m in n:                                                    #
+                        if np.array_equal(m,pairs[runs]) == True and len(n) == 1:  #
+                            check_squares = True                                   # Wenn ja, wird check_squares = True
+                        
+                
+                runs = runs + 1                       # run wird erhoeht, dadurch wird sichergestellt,
+                                                      # dass zwar jedes neue Feld zufaellig ist, niemals aber
+                                                      # eines welches schon eimal probiert wurde
+                
+                if check_squares == False:                       # Ist check_squares nicht True, kann das Feld mit 
+                    copy[pairs[runs][1],pairs[runs][0]] = 0      # den Koordinaten pairs[runs] in der Kopie der Kopie 
+                    copyshuff = np.copy(copy)                    # gleich Null gesetzt werden copyshuff wird Kopie
+                    pairs = np.delete(pairs,runs-1,0)            # von copy die Koordinaten werden aus pairs geloescht
+                    runs = 0                                     # und runs wird zu Null zurueckgesetzt
+                    
+                if (runs+1) == len(pairs):                                # sollten keine neuen Zahlen eingesetzt werden
+                    break                                                 # koennen, wird aus der Schleife ausgebrochen
+            
+            if len(pairs) == N:                      # wurde die Schleife verlassen, weil das gewuenschte Sudoku
+                sudoku = np.copy(copyshuff)          # generiert wurde, wird hier sudoku zur Kopie von copyshuff
+                break                                # und die Schleife zum Mischen verlassen
+            
+        if len(pairs) == N:                # wurde die Schleife verlassen, weil das gewuenschte Sudoku
+            no_sudoku = False              # generiert wurde und nicht weil 25 mal mischen nicht zum Ergebnis gefuehrt
+                                           # hat, wird no_sudoku = False und somit der weg frei zur Ausgabe des Sudokus
     
-    
-    sudoku = sl.empty_sudoku()                                    # schließlich wird
-    for n in range(1,10):                                         # das Sudoku in eine Form
-        for m in range(1,10):                                     # gebracht, mit der unser Loeser
-            if quest[n-1,m-1] != 0:                               # arbeiten kann
-                sudoku = sl.clues(sudoku,int(quest[n-1,m-1]),m,n) #
-    
-    return(sudoku)         # gibt Sudoku zurueck
+    return(sudoku)    # gibt Sudoku aus
     
 ################################################################################################################
 ### Die folgende Funktion generiert ein Sudoku mit N Hinweisen durch zufaelliges Einsetzen 
